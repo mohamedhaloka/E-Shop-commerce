@@ -39,8 +39,8 @@ exports.logIn = asyncHandler(async (req, res) => {
         throw new ApiError('User not found', 404)
     }
 
-    const token = jwt.sign({ id: user._id }, "this-private-key-e-co", {
-        expiresIn: "2d",
+    const token = jwt.sign({ id: user._id }, this.proccess.env.TOKEN_PRIVATE_KEY, {
+        expiresIn: this.proccess.env.EXPIRES_IN,
     })
 
     const data = {
@@ -68,7 +68,7 @@ exports.proccess = asyncHandler(async (req, res, next) => {
     console.log(token);
 
     //2) Verify token if exist
-    const decodedData = jwt.verify(token, "this-private-key-e-co")
+    const decodedData = jwt.verify(token, this.proccess.env.TOKEN_PRIVATE_KEY)
     const userId = decodedData.id
 
     //3) Check if user exists
@@ -114,6 +114,8 @@ exports.forgetPassword = asyncHandler(async (req, res, next) => {
     user.verificationCodeExpDate = verificationCodeExpDate
 
     user.verificationCodeDone = false
+
+    //Send email
 
     next()
 })

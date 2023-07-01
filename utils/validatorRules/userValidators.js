@@ -12,12 +12,13 @@ exports.createUserValidtor = [
     check('email')
         .notEmpty().withMessage('email is required')
         .isEmail().withMessage('You should write a valid email address')
-        .custom((email) => UserModel.findOne({ email }).then((value) => {
-            if (value) {
-                throw new Error('email already exists')
-            }
-            return true;
-        })),
+        .custom((email) => UserModel.findOne({ email })
+            .then((value) => {
+                if (value) {
+                    throw new Error('email already exists')
+                }
+                return true;
+            })),
     check('password').notEmpty().withMessage('password is required'),
     check('role').optional(),
     check('profImage').optional(),
