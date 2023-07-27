@@ -23,11 +23,30 @@ const userSchema = mongoose.Schema({
     verificationCodeExp: Date,
     verificationCodeDone: Boolean,
     phone: String,
+    active: {
+        type: Boolean,
+        default: true,
+    },
     role: {
         type: String,
         enum: ['user', 'admin', 'manager'],
         default: 'user',
     },
+    washlist: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Product',
+    }],
+    addresses: [{
+        title: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        description: {
+            type: String,
+            required: true,
+        }
+    }],
     profImage: String,
 }
     , { timestaps: true })

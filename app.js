@@ -15,6 +15,9 @@ const brandRoute = require('./routes/brandRoute');
 const productRoute = require('./routes/productRoute');
 const userRoute = require('./routes/userRoute');
 const authRoute = require('./routes/authRoute');
+const reviewRoute = require('./routes/reviewRoute');
+const couponRoute = require('./routes/couponRoute');
+const cartRoute = require('./routes/cartRoute');
 
 
 const app = express()
@@ -50,8 +53,8 @@ app.use(express.static('upload'))
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan("dev"));
-  console.log(`our mode is ${process.env.NODE_ENV}`)
 }
+console.log(`our mode is ${process.env.NODE_ENV}`)
 
 app.use('/api/v1/categories', categoryRoute)
 app.use('/api/v1/subCategories', subCategoryRoute)
@@ -59,6 +62,9 @@ app.use('/api/v1/brands', brandRoute)
 app.use('/api/v1/products', productRoute)
 app.use('/api/v1/users', userRoute)
 app.use('/api/v1/auth', authRoute)
+app.use('/api/v1/reviews', reviewRoute)
+app.use('/api/v1/coupons', couponRoute)
+app.use('/api/v1/cart', cartRoute)
 
 //Whatever not the valid route use this Middleware
 app.all('*', (req, res, next) => {

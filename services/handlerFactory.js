@@ -51,7 +51,7 @@ exports.createDoc = (Model) => asyncHandler(async (req, res, next) => {
 
 exports.getAllDocs = (Model, modelName) => asyncHandler(async (req, res, next) => {
     const totalRecords = await Model.countDocuments({});
-    const { mongoseQuery, pagination } = new APIFeatures(Model.find({}), req.query)
+    const { mongoseQuery, pagination } = new APIFeatures(Model.find(req.filterOptions), req.query)
         .pagination(totalRecords)
         .filter()
         .search(modelName)
@@ -67,7 +67,8 @@ exports.getAllDocs = (Model, modelName) => asyncHandler(async (req, res, next) =
 })
 
 exports.getDocById = (Model) => asyncHandler(async (req, res, next) => {
-    const item = await Model.findById(req.params.id);
+    const item = await Model.findById(req.params.id)
+    // .populate('reviews');
     //.populate({ path: 'category', select: '-__v -slug' })
     // .populate({ path: 'subCategory', select: '-__v -slug' })
     // .populate({ path: 'brand', select: '-__v -slug -updatedAt' })

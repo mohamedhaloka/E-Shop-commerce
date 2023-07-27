@@ -43,7 +43,18 @@ const productSchema = mongoose.Schema({
         max: 5
     },
     ratingQuantity: Number,
-}, { timestamps: true })
+}, {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+})
+
+
+productSchema.virtual('reviews', {
+    ref: 'Review',
+    localField: '_id',
+    foreignField: 'product',
+})
 
 const reAssignImagesWithBaseUrl = (doc) => {
     if (doc.imageCover) {
@@ -64,6 +75,7 @@ const reAssignImagesWithBaseUrl = (doc) => {
 
 productSchema.post('init', reAssignImagesWithBaseUrl)
 productSchema.post('save', reAssignImagesWithBaseUrl)
+
 
 const ProductModel = mongoose.model('Product', productSchema)
 
