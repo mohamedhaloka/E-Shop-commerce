@@ -4,6 +4,8 @@ const morgan = require("morgan");
 const connectLivereload = require("connect-livereload");
 const path = require("path");
 const livereload = require("livereload");
+const cors = require('cors')
+const compression = require('compression')
 
 const dbConnection = require('./config/database');
 const ApiError = require('./utils/apiError')
@@ -18,7 +20,8 @@ const authRoute = require('./routes/authRoute');
 const reviewRoute = require('./routes/reviewRoute');
 const couponRoute = require('./routes/couponRoute');
 const cartRoute = require('./routes/cartRoute');
-
+const orderRoute = require('./routes/orderRoute');
+const { webhook } = require('./services/orderService');
 
 const app = express()
 
@@ -27,11 +30,16 @@ dotenv.config({ path: "config.env" })
 
 app.set("view engine", "ejs")
 app.use(express.static("public"))
+app.use(cors())
+app.options('*', cors()) // include before other routes
+
+app.use(compression())
+
+app.post('/checkout-webhook', express.raw({ type: 'application/json' }), webhook)
 
 //for auto refresh
 const liveReloadServer = livereload.createServer();
 liveReloadServer.watch(path.join(__dirname, 'public'));
-
 
 console.log(path.join(__dirname, 'public'));
 
@@ -65,6 +73,7 @@ app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/reviews', reviewRoute)
 app.use('/api/v1/coupons', couponRoute)
 app.use('/api/v1/cart', cartRoute)
+app.use('/api/v1/order', orderRoute)
 
 //Whatever not the valid route use this Middleware
 app.all('*', (req, res, next) => {

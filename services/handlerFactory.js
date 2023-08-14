@@ -66,8 +66,13 @@ exports.getAllDocs = (Model, modelName) => asyncHandler(async (req, res, next) =
     });
 })
 
-exports.getDocById = (Model) => asyncHandler(async (req, res, next) => {
+exports.getDocById = (Model, populateData) => asyncHandler(async (req, res, next) => {
     const item = await Model.findById(req.params.id)
+
+    // if (populateData) {
+    //     item.populate(populateData)
+    // }
+    // await item;
     // .populate('reviews');
     //.populate({ path: 'category', select: '-__v -slug' })
     // .populate({ path: 'subCategory', select: '-__v -slug' })
