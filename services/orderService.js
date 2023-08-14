@@ -128,18 +128,22 @@ exports.createPaymentUrl = asyncHandler(async (req, res, next) => {
                     unit_amount: orderPrice * 100,
                 },
 
+
             },
         ],
         customer_email: req.user.email,
         client_reference_id: req.params.cartId,
         mode: 'payment',
+        metadata: {
+            shippingAddress: req.body.shippingAddress
+        },
         success_url: `https://www.google.com/success.html`,
         cancel_url: `https://www.google.com/cancel.html`,
     });
 
     res.status(303).json({
         status: 'success',
-        message: 'Paymnet url created successfully',
+        message: 'Payment url created successfully',
         session,
     });
 
@@ -161,7 +165,7 @@ const createCreditOrder = async (session) => {
         user: user._id,
         cartItems: cart.cartItems,
         totalOrderPrice: orderTotal,
-        shippingAddress: "",
+        shippingAddress: session.metadata.shippingAddress,
         isPaid: true,
         paidAt: Date.now(),
         paymentMethodType: "card"
@@ -190,7 +194,6 @@ exports.webhook = asyncHandler(async (req, res, next) => {
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-    console.log('Webhook  ', event)
     if (event.type === "checkout.session.completed") {
         createCreditOrder(event.data.object)
     }
