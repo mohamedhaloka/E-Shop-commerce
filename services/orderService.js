@@ -190,8 +190,8 @@ exports.webhook = asyncHandler(async (req, res, next) => {
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-
-    if (event === "checkout.session.completed") {
+    console.log('Webhook  ', event)
+    if (event.type === "checkout.session.completed") {
         createCreditOrder(event.data.object)
     }
 })
