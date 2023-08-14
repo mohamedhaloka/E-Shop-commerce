@@ -5,6 +5,7 @@ const ApiError = require('../utils/apiError');
 const OrderModel = require('../models/orderModel')
 const ProductModel = require('../models/productModel')
 const CartModel = require('../models/cartModel')
+const UserModel = require('../models/userModel')
 const { getAllDocs, getDocById } = require('./handlerFactory')
 
 
@@ -144,8 +145,36 @@ exports.createPaymentUrl = asyncHandler(async (req, res, next) => {
 
 })
 
-const createCreditOrder = async () => {
+const createCreditOrder = async (session) => {
     console.log('createCreditOrder');
+
+    const cartId = session.client_reference_id
+    const orderTotal = session.amount_total / 100
+
+    const cart = await CartModel.findById(cartId)
+    const user = await UserModel.findObe({ email: session.customer_email })
+
+
+    await OrderModel.create({
+        user: user._id,
+        cartItems: cart.cartItems,
+        totalOrderPrice: orderTotal,
+        shippingAddress: "",
+        isPaid: true,
+        paidAt: Date.now(),
+        paymentMethodType: "card"
+    })
+    //4- After creating order, decrement the quantity and sold from product 
+    const bulkOptions = cart.cartItems.map(item => ({
+        updateOne: {
+            filter: { _id: item.product._id },
+            update: { $inc: { quantity: -item.quantity, sold: +item.quantity } }
+        }
+    }))
+    await ProductModel.bulkWrite(bulkOptions, {})
+    //5- Clear the user cart
+    await CartModel.findOneAndDelete(cartId)
+
 }
 
 exports.webhook = asyncHandler(async (req, res, next) => {
@@ -161,7 +190,7 @@ exports.webhook = asyncHandler(async (req, res, next) => {
 
 
     if (event === "checkout.session.completed") {
-        createCreditOrder()
+        createCreditOrder(event.data.object)
     }
 })
 
