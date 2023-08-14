@@ -151,9 +151,11 @@ const createCreditOrder = async (session) => {
     const cartId = session.client_reference_id
     const orderTotal = session.amount_total / 100
 
-    const cart = await CartModel.findById(cartId)
-    const user = await UserModel.findObe({ email: session.customer_email })
+    console.log(cartId)
+    console.log(orderTotal)
 
+    const cart = await CartModel.findById(cartId)
+    const user = await UserModel.findOne({ email: session.customer_email })
 
     await OrderModel.create({
         user: user._id,
