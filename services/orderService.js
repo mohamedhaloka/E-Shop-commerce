@@ -155,9 +155,6 @@ const createCreditOrder = async (session) => {
     const cartId = session.client_reference_id
     const orderTotal = session.amount_total / 100
 
-    console.log(cartId)
-    console.log(orderTotal)
-
     const cart = await CartModel.findById(cartId)
     const user = await UserModel.findOne({ email: session.customer_email })
 
@@ -197,6 +194,10 @@ exports.webhook = asyncHandler(async (req, res, next) => {
     if (event.type === "checkout.session.completed") {
         createCreditOrder(event.data.object)
     }
+
+    res.status(200).json({
+        received: true,
+    })
 })
 
 

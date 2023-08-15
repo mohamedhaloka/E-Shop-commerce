@@ -38,12 +38,6 @@ exports.addNewAddress = asyncHandler(async (req, res) => {
 
 exports.updateAddress = asyncHandler(async (req, res) => {
     const user = await UserModel.findById(req.user._id)
-    console.log(req.params.id);
-    console.log(req.params.id);
-
-    // if (!user.addresses.includes(req.params.id)) {
-    //     throw new ApiError("address not found", 404);
-    // }
 
     const address = {
         title: req.body.title,
@@ -57,7 +51,7 @@ exports.updateAddress = asyncHandler(async (req, res) => {
 
     res.status(200).json({
         'status': 'success',
-        'msg': 'address upated successfully',
+        'msg': 'address updated successfully',
         'data': address
     })
 })

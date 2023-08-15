@@ -23,7 +23,6 @@ exports.addProductToCart = asyncHandler(async (req, res, next) => {
 
     if (!cart) {
         // Cart is empty, you should create one with product
-        console.log(color);
         cart = await CartModel.create({
             cartItems: [{
                 product: productId,
@@ -48,17 +47,18 @@ exports.addProductToCart = asyncHandler(async (req, res, next) => {
                 price: product.price,
             })
         }
-        //Calculate total price
-        calculateTotalPrice(cart)
-
-        await cart.save()
-
-        res.status(200).json({
-            status: "success",
-            message: "Add product to cart successfully",
-            cart: cart,
-        })
     }
+
+    //Calculate total price
+    calculateTotalPrice(cart)
+
+    await cart.save()
+
+    res.status(200).json({
+        status: "success",
+        message: "Add product to cart successfully",
+        cart: cart,
+    })
 })
 
 
