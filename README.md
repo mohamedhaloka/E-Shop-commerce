@@ -1,10 +1,10 @@
-![](https://dso7.raed.net:451/files/Screenshot-2023-09-30-at-12-20-53%E2%80%AFAM.jpg)
+![](https://www.babup.com/do.php?img=46882)
 
 # E-Shop app
 
 It is a white label Node JS application that you can download and use whether you are a mobile application developer. You can use it through Docs or as a backend developer by downloading the project and working on it.
 
-## Setup Enviroment
+## Setup Environment
 
 ### _For NodeJS_
 
@@ -21,8 +21,10 @@ _The file name must be `config.env`_
 PORT=3000
 NODE_ENV ex(production, development)
 BASE_URL
+
 #Database Url
 DB_URI
+
 #JWT Vars
 TOKEN_PRIVATE_KEY
 EXPIRES_IN ex("30d","1m"..)
