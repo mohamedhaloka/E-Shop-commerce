@@ -100,7 +100,7 @@ exports.checkUpdatePRoductBodyIsEmpty = (req, res, next) => {
     if (Object.keys(req.body).length === 0) {
         return res.status(400).json({
             status: "error",
-            message: 'No body provided add atleast one filed'
+            message: 'No body provided add at least one filed'
         })
     }
     next()
