@@ -150,7 +150,6 @@ exports.createPaymentUrl = asyncHandler(async (req, res, next) => {
 })
 
 const createCreditOrder = async (session) => {
-    console.log('createCreditOrder');
 
     const cartId = session.client_reference_id
     const orderTotal = session.amount_total / 100

@@ -60,8 +60,7 @@ exports.createProductValidor = [
             return true;
         })).custom((subCategoryId, { req }) => SubCategoryModel.find({ categoryId: req.body.category })
             .then((subCategories) => {
-                console.log(req.body.category);
-                console.log(subCategories.length);
+
                 if (subCategories.length > 0) {
                     if (!subCategories.every((subCategory) => subCategory._id.toString() === subCategoryId.toString())) {
                         throw new Error('sub category id not belong to category id')
@@ -94,7 +93,9 @@ exports.createProductValidor = [
 exports.updateProductValidator = [
     check('id').isMongoId().withMessage('id must be valid'),
     body('title').custom((value, { req }) => {
-        req.body.slug = slugify(value)
+        if (req.body.title) {
+            req.body.slug = slugify(value)
+        }
         return true;
     }),
     validatorMiddleware

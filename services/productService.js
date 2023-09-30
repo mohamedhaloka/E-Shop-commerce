@@ -38,7 +38,7 @@ exports.resizeProductImage = asyncHandler(async (req, res, next) => {
         const filePath = __dirname.replace("/services", '') + imagesPath;
 
         if (!fs.existsSync(filePath)) {
-            await fs.mkdirSync(filePath);
+            fs.mkdirSync(filePath);
         }
 
         await sharp(req.files.imageCover[0].buffer)
@@ -58,7 +58,7 @@ exports.resizeProductImage = asyncHandler(async (req, res, next) => {
             const filePath = __dirname.replace("/services", '') + imagesPath;
 
             if (!fs.existsSync(filePath)) {
-                await fs.mkdirSync(filePath);
+                fs.mkdirSync(filePath);
             }
 
             await sharp(req.files.imageCover[0].buffer)
@@ -74,9 +74,6 @@ exports.resizeProductImage = asyncHandler(async (req, res, next) => {
 
         req.body.images = images;
     }
-
-    console.log(req.body.imageCover)
-    console.log(req.body.images)
 
     next()
 })

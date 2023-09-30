@@ -19,7 +19,6 @@ const errorHandlerProduction = (error, res) => {
 
 
 const globalErrorMiddleware = (error, req, res, next) => {
-    console.log(error.message);
     error.message = error.message || "Error"
     error.statusCode = error.statusCode || 500
     error.status = error.status || 'error'

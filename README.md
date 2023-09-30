@@ -17,7 +17,13 @@ Download the project first and then run the following command
 Before running the project you must create an .env file and add the necessary variables.
 _The file name must be `config.env`_
 
+Or change the name of file in `app.js` from here
+
+```js
+dotenv.config({ path: "config.env" });
 ```
+
+```env
 PORT=3000
 NODE_ENV ex(production, development)
 BASE_URL

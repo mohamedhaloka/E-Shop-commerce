@@ -10,7 +10,6 @@ const { getAllDocs, getDocById, createDoc, updateOne, deleteOne } = require('./h
 
 const memoryStorage = multer.memoryStorage()
 const fileFilter = (req, file, cb) => {
-    console.log(file);
     if (file.mimetype.startsWith('image')) {
         cb(null, true)
     } else {
@@ -24,12 +23,16 @@ const upload = multer({
 })
 
 exports.resizeImage = asyncHandler(async (req, res, next) => {
+
+    if (!req.file) {
+        return next();
+    }
     const fileName = `brand_${req.file.originalname}_${Date.now()}.jpeg`
     const imagesPath = '/upload/';
     const filePath = __dirname.replace("/services", '') + imagesPath;
 
     if (!fs.existsSync(filePath)) {
-        await fs.mkdirSync(filePath);
+        fs.mkdirSync(filePath);
     }
 
     await sharp(req.file.buffer)

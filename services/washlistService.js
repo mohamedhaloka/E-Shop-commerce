@@ -19,16 +19,14 @@ exports.getWashlist = asyncHandler(async (req, res) => {
 
 
 exports.toggleFromWashlist = asyncHandler(async (req, res) => {
-    const user = await UserModel.findById(req.user._id)
 
     let message = '';
-    if (user.washlist.includes(req.body.productId)) {
+    if (req.user.washlist.includes(req.body.productId)) {
         message = 'removed from washlist successfullty';
         await UserModel.findByIdAndUpdate(req.user._id,
             {
                 $pull: { washlist: req.body.productId }
             },
-            { new: true },
         )
 
     } else {
@@ -38,12 +36,9 @@ exports.toggleFromWashlist = asyncHandler(async (req, res) => {
             {
                 $addToSet: { washlist: req.body.productId }
             },
-            { new: true },
         )
     }
-
-
-    user.save();
+    const user = await UserModel.findById(req.user._id)
 
     res.status(200).json({
         'status': 'success',

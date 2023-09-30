@@ -93,8 +93,6 @@ exports.updateLoggedUserPasswordValidators = [
 
             const decryptUserPass = crypt(req.body.oldPassword)
 
-            console.log(decryptUserPass)
-
             if (req.body.oldPassword === req.body.password || req.body.oldPassword === req.body.confirmPassword) {
                 throw new Error('new password and confirm new password must be not equal old password')
             }

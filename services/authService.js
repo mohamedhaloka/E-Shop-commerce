@@ -156,7 +156,6 @@ exports.verifyVerificationCode = asyncHandler(async (req, res, next) => {
     }
 
     const enterVerificationCodeHashed = crypt(req.body.code.toString())
-    console.log(enterVerificationCodeHashed);
 
     if (enterVerificationCodeHashed !== user.verificationCodeHashed) {
         throw new ApiError("invalid verification code", 400)

@@ -49,7 +49,6 @@ const upload = multer({
 })
 
 exports.resizeImage = asyncHandler(async (req, res, next) => {
-    console.log(req.file.buffer);
     const fileName = `category_${req.file.originalname}_${Date.now()}.jpg`
     const imagesPath = '/upload/';
     const filePath = __dirname.replace("/services", '') + imagesPath;

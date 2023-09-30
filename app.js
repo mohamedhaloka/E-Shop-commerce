@@ -41,7 +41,6 @@ app.post('/checkout-webhook', express.raw({ type: 'application/json' }), webhook
 const liveReloadServer = livereload.createServer();
 liveReloadServer.watch(path.join(__dirname, 'public'));
 
-console.log(path.join(__dirname, 'public'));
 
 app.use(connectLivereload());
 
@@ -62,7 +61,6 @@ app.use(express.static('upload'))
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan("dev"));
 }
-console.log(`our mode is ${process.env.NODE_ENV}`)
 
 app.use('/api/v1/categories', categoryRoute)
 app.use('/api/v1/subCategories', subCategoryRoute)
