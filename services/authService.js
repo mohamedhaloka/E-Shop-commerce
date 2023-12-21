@@ -57,13 +57,16 @@ exports.logIn = asyncHandler(async (req, res) => {
 
     res.status(200).json({
         status: "fetch account data successfully",
-        data: data,
+        result: {
+            userVerifiedAt: Date(),
+            userData: data,
+        },
     })
 })
 
 // @desc     Validation the user token and accessbility of the user
 exports.proccess = asyncHandler(async (req, res, next) => {
-    // 1) chekc if token in headers and Get it
+    // 1) check if token in headers and Get it
     const { authorization } = req.headers
     if (!authorization || !authorization.startsWith('Bearer ')) {
         throw new ApiError('authorization to use this route, you should add JWT', 401)
